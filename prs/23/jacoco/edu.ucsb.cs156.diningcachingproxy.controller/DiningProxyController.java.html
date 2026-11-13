@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>DiningProxyController.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">diningcachingproxy</a> &gt; <a href="index.source.html" class="el_package">edu.ucsb.cs156.diningcachingproxy.controller</a> &gt; <span class="el_source">DiningProxyController.java</span></div><h1>DiningProxyController.java</h1><pre class="source lang-java linenums">package edu.ucsb.cs156.diningcachingproxy.controller;
+
+import edu.ucsb.cs156.diningcachingproxy.services.DiningProxyService;
+import edu.ucsb.cs156.diningcachingproxy.services.HostTrackingService;
+import edu.ucsb.cs156.diningcachingproxy.services.ResolveHostnameJobFactory;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.servlet.http.HttpServletRequest;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestHeader;
+import org.springframework.web.bind.annotation.RestController;
+
+/**
+ * Caching proxy for every UCSB API endpoint under {@code /dining/**}. Unlike a controller per known
+ * endpoint, this one requires no code change when proj-dining starts calling a new UCSB dining path
+ * — the request path (and query string, if any) it actually receives becomes the cache key,
+ * discovered at runtime rather than hardcoded here.
+ */
+@Tag(name = &quot;UCSB Dining Proxy&quot;)
+@RestController
+<span class="fc" id="L23">public class DiningProxyController {</span>
+
+  @Autowired private DiningProxyService diningProxyService;
+  @Autowired private HostTrackingService hostTrackingService;
+  @Autowired private ResolveHostnameJobFactory resolveHostnameJobFactory;
+
+  @Operation(summary = &quot;Cached proxy for any UCSB dining API endpoint&quot;)
+  @GetMapping(&quot;/dining/**&quot;)
+  public ResponseEntity&lt;String&gt; proxy(
+      HttpServletRequest request,
+      @RequestHeader(value = &quot;ucsb-api-key&quot;, required = false) String apiKey,
+      @RequestHeader(value = &quot;ucsb-api-version&quot;, required = false) String apiVersion,
+      @RequestHeader(value = &quot;X-Requesting-App&quot;, required = false) String requestingApp) {
+<span class="fc" id="L36">    String clientAddress = extractClientAddress(request);</span>
+    // A caller that self-identifies is tracked by that name instead of its IP - callers on the
+    // same Dokku host as this proxy all share Docker's internal bridge network, so the IP alone
+    // can't distinguish one calling app from another and never resolves via reverse DNS anyway.
+    String identifier =
+<span class="fc bfc" id="L41" title="All 4 branches covered.">        (requestingApp != null &amp;&amp; !requestingApp.isBlank()) ? requestingApp : clientAddress;</span>
+<span class="fc" id="L42">    boolean isNewAddress = hostTrackingService.recordRequest(identifier);</span>
+<span class="fc bfc" id="L43" title="All 4 branches covered.">    if (isNewAddress &amp;&amp; identifier.equals(clientAddress)) {</span>
+<span class="fc" id="L44">      resolveHostnameJobFactory.launch(clientAddress);</span>
+    }
+
+<span class="fc" id="L47">    String requestPath = request.getRequestURI();</span>
+<span class="fc" id="L48">    String queryString = request.getQueryString();</span>
+<span class="fc bfc" id="L49" title="All 2 branches covered.">    if (queryString != null) {</span>
+<span class="fc" id="L50">      requestPath = requestPath + &quot;?&quot; + queryString;</span>
+    }
+<span class="fc" id="L52">    return diningProxyService.proxyGet(requestPath, apiKey, apiVersion);</span>
+  }
+
+  // This app runs behind Dokku's reverse proxy, so request.getRemoteAddr() would only ever
+  // report nginx's own internal address - the true caller's IP is in X-Forwarded-For.
+  private String extractClientAddress(HttpServletRequest request) {
+<span class="fc" id="L58">    String forwardedFor = request.getHeader(&quot;X-Forwarded-For&quot;);</span>
+<span class="fc bfc" id="L59" title="All 4 branches covered.">    if (forwardedFor != null &amp;&amp; !forwardedFor.isBlank()) {</span>
+<span class="fc" id="L60">      return forwardedFor.split(&quot;,&quot;)[0].trim();</span>
+    }
+<span class="fc" id="L62">    return request.getRemoteAddr();</span>
+  }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.15.202606040825</span></div></body></html>

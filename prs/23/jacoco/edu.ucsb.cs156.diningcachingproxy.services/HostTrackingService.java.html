@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>HostTrackingService.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">diningcachingproxy</a> &gt; <a href="index.source.html" class="el_package">edu.ucsb.cs156.diningcachingproxy.services</a> &gt; <span class="el_source">HostTrackingService.java</span></div><h1>HostTrackingService.java</h1><pre class="source lang-java linenums">package edu.ucsb.cs156.diningcachingproxy.services;
+
+import java.util.List;
+
+/**
+ * Tracks which hosts have sent requests through the proxy, and how many times each has done so.
+ * Abstracted behind this base class so the storage mechanism (in-memory today) can later be swapped
+ * for a persisted one (Mongo/SQL) without changing callers.
+ *
+ * &lt;p&gt;Every address is tracked under its own raw form (e.g. an IP address) until a hostname is
+ * resolved for it - resolution happens out-of-band (see {@code ResolveHostnameJob}), since it can
+ * be asynchronous.
+ */
+<span class="fc" id="L14">public abstract class HostTrackingService {</span>
+
+  /**
+   * Records a single request from the given remote address (the caller's true IP, already resolved
+   * from X-Forwarded-For where applicable).
+   *
+   * @return true if this is the first time this exact address has been seen
+   */
+  public abstract boolean recordRequest(String remoteAddress);
+
+  /**
+   * Updates the display name shown for a previously-seen address - called once a hostname
+   * resolution attempt for it completes (successfully or not).
+   */
+  public abstract void resolveHostname(String remoteAddress, String hostname);
+
+  /**
+   * Every host seen so far with its request count, sorted by host (hostname, or IP if unresolved).
+   */
+  public abstract List&lt;HostCount&gt; getHostCounts();
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.15.202606040825</span></div></body></html>

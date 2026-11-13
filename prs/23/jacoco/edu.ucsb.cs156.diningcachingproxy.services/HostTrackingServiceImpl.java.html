@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>HostTrackingServiceImpl.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">diningcachingproxy</a> &gt; <a href="index.source.html" class="el_package">edu.ucsb.cs156.diningcachingproxy.services</a> &gt; <span class="el_source">HostTrackingServiceImpl.java</span></div><h1>HostTrackingServiceImpl.java</h1><pre class="source lang-java linenums">package edu.ucsb.cs156.diningcachingproxy.services;
+
+import java.util.Comparator;
+import java.util.List;
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.atomic.AtomicLong;
+import org.springframework.stereotype.Service;
+
+/**
+ * In-memory implementation of {@link HostTrackingService}. Everything is keyed by the raw remote
+ * address internally, since a hostname (if any) is only known once {@link #resolveHostname(String,
+ * String)} is called - which may happen well after the first request from that address was already
+ * counted, since resolution runs as an asynchronous job.
+ */
+@Service
+<span class="fc" id="L17">public class HostTrackingServiceImpl extends HostTrackingService {</span>
+
+<span class="fc" id="L19">  private final Map&lt;String, String&gt; displayNames = new ConcurrentHashMap&lt;&gt;();</span>
+<span class="fc" id="L20">  private final Map&lt;String, AtomicLong&gt; requestCounts = new ConcurrentHashMap&lt;&gt;();</span>
+
+  @Override
+  public boolean recordRequest(String remoteAddress) {
+<span class="fc" id="L24">    displayNames.putIfAbsent(remoteAddress, remoteAddress);</span>
+<span class="fc" id="L25">    AtomicLong counter = requestCounts.computeIfAbsent(remoteAddress, key -&gt; new AtomicLong(0));</span>
+<span class="fc bfc" id="L26" title="All 2 branches covered.">    return counter.getAndIncrement() == 0;</span>
+  }
+
+  @Override
+  public void resolveHostname(String remoteAddress, String hostname) {
+<span class="fc" id="L31">    displayNames.put(remoteAddress, hostname);</span>
+<span class="fc" id="L32">  }</span>
+
+  @Override
+  public List&lt;HostCount&gt; getHostCounts() {
+<span class="fc" id="L36">    return requestCounts.entrySet().stream()</span>
+<span class="fc" id="L37">        .map(</span>
+            entry -&gt;
+<span class="fc" id="L39">                new HostCount(</span>
+<span class="fc" id="L40">                    displayNames.getOrDefault(entry.getKey(), entry.getKey()),</span>
+<span class="fc" id="L41">                    entry.getValue().get()))</span>
+<span class="fc" id="L42">        .sorted(Comparator.comparing(HostCount::host))</span>
+<span class="fc" id="L43">        .toList();</span>
+  }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.15.202606040825</span></div></body></html>

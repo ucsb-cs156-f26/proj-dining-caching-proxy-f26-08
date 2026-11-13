@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>StatsService.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">diningcachingproxy</a> &gt; <a href="index.source.html" class="el_package">edu.ucsb.cs156.diningcachingproxy.services</a> &gt; <span class="el_source">StatsService.java</span></div><h1>StatsService.java</h1><pre class="source lang-java linenums">package edu.ucsb.cs156.diningcachingproxy.services;
+
+import java.util.concurrent.atomic.AtomicLong;
+import org.springframework.stereotype.Service;
+
+/**
+ * In-memory counters tracking cache performance since the proxy was started up. Reset on restart —
+ * durable persistence of these stats may come later.
+ */
+@Service
+<span class="fc" id="L11">public class StatsService {</span>
+
+<span class="fc" id="L13">  private final AtomicLong totalRequests = new AtomicLong(0);</span>
+<span class="fc" id="L14">  private final AtomicLong cacheHits = new AtomicLong(0);</span>
+<span class="fc" id="L15">  private final AtomicLong cacheMisses = new AtomicLong(0);</span>
+
+  public void recordHit() {
+<span class="fc" id="L18">    totalRequests.incrementAndGet();</span>
+<span class="fc" id="L19">    cacheHits.incrementAndGet();</span>
+<span class="fc" id="L20">  }</span>
+
+  public void recordMiss() {
+<span class="fc" id="L23">    totalRequests.incrementAndGet();</span>
+<span class="fc" id="L24">    cacheMisses.incrementAndGet();</span>
+<span class="fc" id="L25">  }</span>
+
+  public long getTotalRequests() {
+<span class="fc" id="L28">    return totalRequests.get();</span>
+  }
+
+  public long getCacheHits() {
+<span class="fc" id="L32">    return cacheHits.get();</span>
+  }
+
+  public long getCacheMisses() {
+<span class="fc" id="L36">    return cacheMisses.get();</span>
+  }
+
+  public double getHitRatePercentage() {
+<span class="fc" id="L40">    long total = totalRequests.get();</span>
+<span class="fc bfc" id="L41" title="All 2 branches covered.">    if (total == 0) {</span>
+<span class="fc" id="L42">      return 0.0;</span>
+    }
+<span class="fc" id="L44">    return 100.0 * cacheHits.get() / total;</span>
+  }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.15.202606040825</span></div></body></html>
