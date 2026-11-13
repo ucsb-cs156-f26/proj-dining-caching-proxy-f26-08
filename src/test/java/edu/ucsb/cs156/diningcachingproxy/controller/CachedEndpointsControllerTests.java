@@ -63,9 +63,9 @@ public class CachedEndpointsControllerTests extends ControllerTestCase {
     List<CachedEndpointsController.CachedEndpointDTO> expected =
         List.of(
             new CachedEndpointsController.CachedEndpointDTO(
-                "cache-1", "/dining/commons/v1/", 5, 200, "[]"),
+                "cache-1", "/dining/commons/v1/", 5, 200, "[]", null),
             new CachedEndpointsController.CachedEndpointDTO(
-                "cache-2", "/dining/menu/v1/2024-08-16/carrillo", 1, 200, "{}"));
+                "cache-2", "/dining/menu/v1/2024-08-16/carrillo", 1, 200, "{}", null));
 
     String expectedJson = mapper.writeValueAsString(expected);
     assertEquals(expectedJson, response.getResponse().getContentAsString());

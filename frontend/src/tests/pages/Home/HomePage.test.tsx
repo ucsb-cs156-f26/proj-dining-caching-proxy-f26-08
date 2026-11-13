@@ -36,6 +36,7 @@ describe("HomePage tests", () => {
       requestPath: "/dining/commons/v1/",
       hitCount: 5,
       responseStatus: 200,
+      cachedAt: "2026-11-12T20:00:00Z",
       responseBody: '["Carrillo", "De La Guerra"]',
     },
     {
@@ -43,6 +44,7 @@ describe("HomePage tests", () => {
       requestPath: "/dining/menu/v1/2024-08-16/carrillo",
       hitCount: 1,
       responseStatus: 404,
+      cachedAt: null,
       responseBody: '{"error":"Not found"}',
     },
   ];
@@ -403,6 +405,13 @@ describe("HomePage tests", () => {
     expect(
       screen.getByTestId("HomePage-cached-table-cell-row-1-col-responseStatus"),
     ).toHaveTextContent("404");
+
+    expect(
+      screen.getByTestId("HomePage-cached-table-cell-row-0-col-cachedAt"),
+    ).toHaveTextContent(new Date("2026-11-12T20:00:00Z").toLocaleString());
+    expect(
+      screen.getByTestId("HomePage-cached-table-cell-row-1-col-cachedAt"),
+    ).toHaveTextContent("Unknown");
 
     const responseDetails = screen.getAllByText("View Response");
     fireEvent.click(responseDetails[0]);

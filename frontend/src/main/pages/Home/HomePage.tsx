@@ -31,6 +31,7 @@ export type CachedEndpoint = {
   hitCount: number;
   responseStatus: number;
   responseBody: string;
+  cachedAt: string | null;
 };
 
 const hostsEndpoint = "/api/admin/hosts";
@@ -131,6 +132,14 @@ export default function HomePage(): React.JSX.Element {
     { header: "Request Path", accessorKey: "requestPath" },
     { header: "Hit Count", accessorKey: "hitCount" },
     { header: "Response Status", accessorKey: "responseStatus" },
+    {
+      header: "Cached At",
+      accessorKey: "cachedAt",
+      cell: ({ cell }: { cell: Cell<CachedEndpoint, unknown> }) => {
+        const { cachedAt } = cell.row.original;
+        return cachedAt ? new Date(cachedAt).toLocaleString() : "Unknown";
+      },
+    },
     {
       header: "Response Body",
       id: "responseBody",
