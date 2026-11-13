@@ -1,5 +1,6 @@
 package edu.ucsb.cs156.diningcachingproxy.collections;
 
+import java.time.Instant;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -27,6 +28,7 @@ public class CachedResponse {
 
   private int responseStatus;
   private String responseBody;
+  private Instant cachedAt;
 
   // Times this request path has been served (1 on first cache, incremented on every
   // subsequent cache hit) — feeds the admin endpoint-inventory view (issue #2).

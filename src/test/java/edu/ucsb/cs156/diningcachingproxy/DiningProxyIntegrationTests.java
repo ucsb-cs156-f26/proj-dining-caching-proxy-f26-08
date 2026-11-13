@@ -6,6 +6,7 @@ import static org.springframework.test.web.client.match.MockRestRequestMatchers.
 import static org.springframework.test.web.client.response.MockRestResponseCreators.withSuccess;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import edu.ucsb.cs156.diningcachingproxy.collections.CachedResponseRepository;
@@ -74,14 +75,12 @@ public class DiningProxyIntegrationTests {
         "{\"totalRequests\":2,\"cacheHits\":1,\"cacheMisses\":1,\"hitRatePercentage\":50.0}",
         statsJson);
 
-    String endpointsJson =
-        mockMvc
-            .perform(get("/api/admin/endpoints"))
-            .andExpect(status().isOk())
-            .andReturn()
-            .getResponse()
-            .getContentAsString();
-
-    assertEquals("[{\"requestPath\":\"/dining/commons/v1/\",\"hitCount\":2}]", endpointsJson);
+    mockMvc
+        .perform(get("/api/admin/endpoints"))
+        .andExpect(status().isOk())
+        .andExpect(jsonPath("$.length()").value(1))
+        .andExpect(jsonPath("$[0].requestPath").value("/dining/commons/v1/"))
+        .andExpect(jsonPath("$[0].cachedAt").isNotEmpty())
+        .andExpect(jsonPath("$[0].hitCount").value(2));
   }
 }

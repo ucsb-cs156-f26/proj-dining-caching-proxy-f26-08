@@ -2,6 +2,7 @@ package edu.ucsb.cs156.diningcachingproxy.services;
 
 import edu.ucsb.cs156.diningcachingproxy.collections.CachedResponse;
 import edu.ucsb.cs156.diningcachingproxy.collections.CachedResponseRepository;
+import java.time.Instant;
 import java.util.List;
 import java.util.Optional;
 import org.springframework.beans.factory.annotation.Value;
@@ -80,6 +81,7 @@ public class DiningProxyService {
               .requestPath(requestPath)
               .responseStatus(upstreamResponse.getStatusCode().value())
               .responseBody(upstreamResponse.getBody())
+              .cachedAt(Instant.now())
               .hitCount(1)
               .build());
     }

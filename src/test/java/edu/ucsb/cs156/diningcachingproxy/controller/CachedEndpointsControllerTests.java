@@ -1,7 +1,9 @@
 package edu.ucsb.cs156.diningcachingproxy.controller;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -37,18 +39,22 @@ public class CachedEndpointsControllerTests extends ControllerTestCase {
   public void admin_can_list_cached_endpoints_with_hit_counts() throws Exception {
     CachedResponse commons =
         CachedResponse.builder()
+            .id("cache-1")
             .requestPath("/dining/commons/v1/")
             .responseStatus(200)
             .responseBody("[]")
             .hitCount(5)
             .build();
+
     CachedResponse menu =
         CachedResponse.builder()
+            .id("cache-2")
             .requestPath("/dining/menu/v1/2024-08-16/carrillo")
             .responseStatus(200)
             .responseBody("{}")
             .hitCount(1)
             .build();
+
     when(cachedResponseRepository.findAll()).thenReturn(Arrays.asList(commons, menu));
 
     MvcResult response =
@@ -56,10 +62,41 @@ public class CachedEndpointsControllerTests extends ControllerTestCase {
 
     List<CachedEndpointsController.CachedEndpointDTO> expected =
         List.of(
-            new CachedEndpointsController.CachedEndpointDTO("/dining/commons/v1/", 5),
             new CachedEndpointsController.CachedEndpointDTO(
-                "/dining/menu/v1/2024-08-16/carrillo", 1));
+                "cache-1", "/dining/commons/v1/", 5, 200, "[]", null),
+            new CachedEndpointsController.CachedEndpointDTO(
+                "cache-2", "/dining/menu/v1/2024-08-16/carrillo", 1, 200, "{}", null));
+
     String expectedJson = mapper.writeValueAsString(expected);
     assertEquals(expectedJson, response.getResponse().getContentAsString());
+  }
+
+  @Test
+  public void logged_out_users_cannot_delete_endpoints() throws Exception {
+    mockMvc.perform(delete("/api/admin/endpoints/cache-1")).andExpect(status().is(403));
+  }
+
+  @WithMockUser(roles = {"USER"})
+  @Test
+  public void regular_users_cannot_delete_endpoints() throws Exception {
+    mockMvc.perform(delete("/api/admin/endpoints/cache-1")).andExpect(status().is(403));
+  }
+
+  @WithMockUser(roles = {"ADMIN"})
+  @Test
+  public void admin_can_delete_cached_endpoint() throws Exception {
+    when(cachedResponseRepository.existsById("cache-1")).thenReturn(true);
+
+    mockMvc.perform(delete("/api/admin/endpoints/cache-1")).andExpect(status().isNoContent());
+
+    verify(cachedResponseRepository).deleteById("cache-1");
+  }
+
+  @WithMockUser(roles = {"ADMIN"})
+  @Test
+  public void deleting_nonexistent_endpoint_returns_404() throws Exception {
+    when(cachedResponseRepository.existsById("missing-id")).thenReturn(false);
+
+    mockMvc.perform(delete("/api/admin/endpoints/missing-id")).andExpect(status().isNotFound());
   }
 }
