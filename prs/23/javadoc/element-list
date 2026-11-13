@@ -1,0 +1,14 @@
+edu.ucsb.cs156.diningcachingproxy
+edu.ucsb.cs156.diningcachingproxy.collections
+edu.ucsb.cs156.diningcachingproxy.config
+edu.ucsb.cs156.diningcachingproxy.controller
+edu.ucsb.cs156.diningcachingproxy.entity
+edu.ucsb.cs156.diningcachingproxy.errors
+edu.ucsb.cs156.diningcachingproxy.interceptors
+edu.ucsb.cs156.diningcachingproxy.jobs
+edu.ucsb.cs156.diningcachingproxy.model
+edu.ucsb.cs156.diningcachingproxy.repository
+edu.ucsb.cs156.diningcachingproxy.services
+edu.ucsb.cs156.diningcachingproxy.services.wiremock
+edu.ucsb.cs156.diningcachingproxy.startup
+edu.ucsb.cs156.diningcachingproxy.utilities
