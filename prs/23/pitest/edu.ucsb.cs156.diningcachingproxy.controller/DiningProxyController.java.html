@@ -1,0 +1,1042 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html;charset=UTF-8">
+    <link rel="stylesheet" type="text/css" href="../style.css">
+</head>
+<body>
+
+
+<h1>DiningProxyController.java</h1>
+
+<table class="src">
+
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@6104691c_1'/>
+1
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@6104691c_1'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>package edu.ucsb.cs156.diningcachingproxy.controller;</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@6104691c_2'/>
+2
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@6104691c_2'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''></span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@6104691c_3'/>
+3
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@6104691c_3'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>import edu.ucsb.cs156.diningcachingproxy.services.DiningProxyService;</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@6104691c_4'/>
+4
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@6104691c_4'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>import edu.ucsb.cs156.diningcachingproxy.services.HostTrackingService;</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@6104691c_5'/>
+5
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@6104691c_5'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>import edu.ucsb.cs156.diningcachingproxy.services.ResolveHostnameJobFactory;</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@6104691c_6'/>
+6
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@6104691c_6'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>import io.swagger.v3.oas.annotations.Operation;</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@6104691c_7'/>
+7
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@6104691c_7'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>import io.swagger.v3.oas.annotations.tags.Tag;</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@6104691c_8'/>
+8
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@6104691c_8'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>import jakarta.servlet.http.HttpServletRequest;</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@6104691c_9'/>
+9
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@6104691c_9'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>import org.springframework.beans.factory.annotation.Autowired;</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@6104691c_10'/>
+10
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@6104691c_10'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>import org.springframework.http.ResponseEntity;</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@6104691c_11'/>
+11
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@6104691c_11'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>import org.springframework.web.bind.annotation.GetMapping;</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@6104691c_12'/>
+12
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@6104691c_12'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>import org.springframework.web.bind.annotation.RequestHeader;</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@6104691c_13'/>
+13
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@6104691c_13'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>import org.springframework.web.bind.annotation.RestController;</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@6104691c_14'/>
+14
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@6104691c_14'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''></span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@6104691c_15'/>
+15
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@6104691c_15'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>/**</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@6104691c_16'/>
+16
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@6104691c_16'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''> * Caching proxy for every UCSB API endpoint under {@code /dining/**}. Unlike a controller per known</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@6104691c_17'/>
+17
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@6104691c_17'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''> * endpoint, this one requires no code change when proj-dining starts calling a new UCSB dining path</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@6104691c_18'/>
+18
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@6104691c_18'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''> * &#8212; the request path (and query string, if any) it actually receives becomes the cache key,</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@6104691c_19'/>
+19
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@6104691c_19'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''> * discovered at runtime rather than hardcoded here.</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@6104691c_20'/>
+20
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@6104691c_20'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''> */</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@6104691c_21'/>
+21
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@6104691c_21'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>@Tag(name = &#34;UCSB Dining Proxy&#34;)</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@6104691c_22'/>
+22
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@6104691c_22'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>@RestController</span></pre></td></tr>
+
+<tr>
+<td class='covered'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@6104691c_23'/>
+23
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@6104691c_23'></a>
+<span>
+</span>
+</span>
+</td>
+<td class='covered'><pre><span  class=''>public class DiningProxyController {</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@6104691c_24'/>
+24
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@6104691c_24'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''></span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@6104691c_25'/>
+25
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@6104691c_25'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>  @Autowired private DiningProxyService diningProxyService;</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@6104691c_26'/>
+26
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@6104691c_26'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>  @Autowired private HostTrackingService hostTrackingService;</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@6104691c_27'/>
+27
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@6104691c_27'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>  @Autowired private ResolveHostnameJobFactory resolveHostnameJobFactory;</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@6104691c_28'/>
+28
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@6104691c_28'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''></span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@6104691c_29'/>
+29
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@6104691c_29'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>  @Operation(summary = &#34;Cached proxy for any UCSB dining API endpoint&#34;)</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@6104691c_30'/>
+30
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@6104691c_30'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>  @GetMapping(&#34;/dining/**&#34;)</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@6104691c_31'/>
+31
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@6104691c_31'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>  public ResponseEntity&#60;String&#62; proxy(</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@6104691c_32'/>
+32
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@6104691c_32'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>      HttpServletRequest request,</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@6104691c_33'/>
+33
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@6104691c_33'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>      @RequestHeader(value = &#34;ucsb-api-key&#34;, required = false) String apiKey,</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@6104691c_34'/>
+34
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@6104691c_34'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>      @RequestHeader(value = &#34;ucsb-api-version&#34;, required = false) String apiVersion,</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@6104691c_35'/>
+35
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@6104691c_35'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>      @RequestHeader(value = &#34;X-Requesting-App&#34;, required = false) String requestingApp) {</span></pre></td></tr>
+
+<tr>
+<td class='covered'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@6104691c_36'/>
+36
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@6104691c_36'></a>
+<span>
+</span>
+</span>
+</td>
+<td class='covered'><pre><span  class=''>    String clientAddress = extractClientAddress(request);</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@6104691c_37'/>
+37
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@6104691c_37'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>    // A caller that self-identifies is tracked by that name instead of its IP - callers on the</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@6104691c_38'/>
+38
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@6104691c_38'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>    // same Dokku host as this proxy all share Docker&#39;s internal bridge network, so the IP alone</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@6104691c_39'/>
+39
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@6104691c_39'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>    // can&#39;t distinguish one calling app from another and never resolves via reverse DNS anyway.</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@6104691c_40'/>
+40
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@6104691c_40'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>    String identifier =</span></pre></td></tr>
+
+<tr>
+<td class='covered'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@6104691c_41'/>
+41
+</td>
+<td class='killed'>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@6104691c_41'>2</a>
+<span>
+1. proxy : negated conditional &rarr; KILLED<br/>
+2. proxy : negated conditional &rarr; KILLED<br/>
+
+</span>
+</span>
+</td>
+<td class='covered'><pre><span  class='killed'>        (requestingApp != null &#38;&#38; !requestingApp.isBlank()) ? requestingApp : clientAddress;</span></pre></td></tr>
+
+<tr>
+<td class='covered'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@6104691c_42'/>
+42
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@6104691c_42'></a>
+<span>
+</span>
+</span>
+</td>
+<td class='covered'><pre><span  class=''>    boolean isNewAddress = hostTrackingService.recordRequest(identifier);</span></pre></td></tr>
+
+<tr>
+<td class='covered'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@6104691c_43'/>
+43
+</td>
+<td class='killed'>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@6104691c_43'>2</a>
+<span>
+1. proxy : negated conditional &rarr; KILLED<br/>
+2. proxy : negated conditional &rarr; KILLED<br/>
+
+</span>
+</span>
+</td>
+<td class='covered'><pre><span  class='killed'>    if (isNewAddress &#38;&#38; identifier.equals(clientAddress)) {</span></pre></td></tr>
+
+<tr>
+<td class='covered'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@6104691c_44'/>
+44
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@6104691c_44'></a>
+<span>
+</span>
+</span>
+</td>
+<td class='covered'><pre><span  class=''>      resolveHostnameJobFactory.launch(clientAddress);</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@6104691c_45'/>
+45
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@6104691c_45'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>    }</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@6104691c_46'/>
+46
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@6104691c_46'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''></span></pre></td></tr>
+
+<tr>
+<td class='covered'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@6104691c_47'/>
+47
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@6104691c_47'></a>
+<span>
+</span>
+</span>
+</td>
+<td class='covered'><pre><span  class=''>    String requestPath = request.getRequestURI();</span></pre></td></tr>
+
+<tr>
+<td class='covered'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@6104691c_48'/>
+48
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@6104691c_48'></a>
+<span>
+</span>
+</span>
+</td>
+<td class='covered'><pre><span  class=''>    String queryString = request.getQueryString();</span></pre></td></tr>
+
+<tr>
+<td class='covered'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@6104691c_49'/>
+49
+</td>
+<td class='killed'>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@6104691c_49'>1</a>
+<span>
+1. proxy : negated conditional &rarr; KILLED<br/>
+
+</span>
+</span>
+</td>
+<td class='covered'><pre><span  class='killed'>    if (queryString != null) {</span></pre></td></tr>
+
+<tr>
+<td class='covered'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@6104691c_50'/>
+50
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@6104691c_50'></a>
+<span>
+</span>
+</span>
+</td>
+<td class='covered'><pre><span  class=''>      requestPath = requestPath + &#34;?&#34; + queryString;</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@6104691c_51'/>
+51
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@6104691c_51'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>    }</span></pre></td></tr>
+
+<tr>
+<td class='covered'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@6104691c_52'/>
+52
+</td>
+<td class='killed'>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@6104691c_52'>1</a>
+<span>
+1. proxy : replaced return value with null for edu/ucsb/cs156/diningcachingproxy/controller/DiningProxyController::proxy &rarr; KILLED<br/>
+
+</span>
+</span>
+</td>
+<td class='covered'><pre><span  class='killed'>    return diningProxyService.proxyGet(requestPath, apiKey, apiVersion);</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@6104691c_53'/>
+53
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@6104691c_53'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>  }</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@6104691c_54'/>
+54
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@6104691c_54'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''></span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@6104691c_55'/>
+55
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@6104691c_55'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>  // This app runs behind Dokku&#39;s reverse proxy, so request.getRemoteAddr() would only ever</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@6104691c_56'/>
+56
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@6104691c_56'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>  // report nginx&#39;s own internal address - the true caller&#39;s IP is in X-Forwarded-For.</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@6104691c_57'/>
+57
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@6104691c_57'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>  private String extractClientAddress(HttpServletRequest request) {</span></pre></td></tr>
+
+<tr>
+<td class='covered'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@6104691c_58'/>
+58
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@6104691c_58'></a>
+<span>
+</span>
+</span>
+</td>
+<td class='covered'><pre><span  class=''>    String forwardedFor = request.getHeader(&#34;X-Forwarded-For&#34;);</span></pre></td></tr>
+
+<tr>
+<td class='covered'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@6104691c_59'/>
+59
+</td>
+<td class='killed'>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@6104691c_59'>2</a>
+<span>
+1. extractClientAddress : negated conditional &rarr; KILLED<br/>
+2. extractClientAddress : negated conditional &rarr; KILLED<br/>
+
+</span>
+</span>
+</td>
+<td class='covered'><pre><span  class='killed'>    if (forwardedFor != null &#38;&#38; !forwardedFor.isBlank()) {</span></pre></td></tr>
+
+<tr>
+<td class='covered'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@6104691c_60'/>
+60
+</td>
+<td class='killed'>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@6104691c_60'>1</a>
+<span>
+1. extractClientAddress : replaced return value with &#34;&#34; for edu/ucsb/cs156/diningcachingproxy/controller/DiningProxyController::extractClientAddress &rarr; KILLED<br/>
+
+</span>
+</span>
+</td>
+<td class='covered'><pre><span  class='killed'>      return forwardedFor.split(&#34;,&#34;)[0].trim();</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@6104691c_61'/>
+61
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@6104691c_61'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>    }</span></pre></td></tr>
+
+<tr>
+<td class='covered'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@6104691c_62'/>
+62
+</td>
+<td class='killed'>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@6104691c_62'>1</a>
+<span>
+1. extractClientAddress : replaced return value with &#34;&#34; for edu/ucsb/cs156/diningcachingproxy/controller/DiningProxyController::extractClientAddress &rarr; KILLED<br/>
+
+</span>
+</span>
+</td>
+<td class='covered'><pre><span  class='killed'>    return request.getRemoteAddr();</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@6104691c_63'/>
+63
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@6104691c_63'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>  }</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@6104691c_64'/>
+64
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@6104691c_64'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>}</span></pre></td></tr>
+
+
+
+<tr><td></td><td></td><td><h2>Mutations</h2></td></tr>
+
+<tr>
+<td><a href='#org.pitest.mutationtest.report.html.SourceFile@6104691c_41'>41</a></td> 
+<td></td>
+<td>
+
+<a name='grouporg.pitest.mutationtest.report.html.SourceFile@6104691c_41'/> 
+
+<p class='KILLED'><span class='pop'>1.<span><b>1</b><br/><b>Location : </b>proxy<br/><b>Killed by : </b>edu.ucsb.cs156.diningcachingproxy.controller.DiningProxyControllerTests.[engine:junit-jupiter]/[class:edu.ucsb.cs156.diningcachingproxy.controller.DiningProxyControllerTests]/[method:falls_back_to_the_remote_address_when_there_is_no_x_forwarded_for_header()]</span></span> negated conditional &rarr; KILLED</span>
+</div> <p class='KILLED'><span class='pop'>2.<span><b>2</b><br/><b>Location : </b>proxy<br/><b>Killed by : </b>edu.ucsb.cs156.diningcachingproxy.controller.DiningProxyControllerTests.[engine:junit-jupiter]/[class:edu.ucsb.cs156.diningcachingproxy.controller.DiningProxyControllerTests]/[method:falls_back_to_the_address_when_the_requesting_app_header_is_blank()]</span></span> negated conditional &rarr; KILLED</span>
+</div> 
+</td>
+</tr>
+<tr>
+<td><a href='#org.pitest.mutationtest.report.html.SourceFile@6104691c_43'>43</a></td> 
+<td></td>
+<td>
+
+<a name='grouporg.pitest.mutationtest.report.html.SourceFile@6104691c_43'/> 
+
+<p class='KILLED'><span class='pop'>1.<span><b>1</b><br/><b>Location : </b>proxy<br/><b>Killed by : </b>edu.ucsb.cs156.diningcachingproxy.controller.DiningProxyControllerTests.[engine:junit-jupiter]/[class:edu.ucsb.cs156.diningcachingproxy.controller.DiningProxyControllerTests]/[method:launches_a_resolution_job_when_the_address_is_new()]</span></span> negated conditional &rarr; KILLED</span>
+</div> <p class='KILLED'><span class='pop'>2.<span><b>2</b><br/><b>Location : </b>proxy<br/><b>Killed by : </b>edu.ucsb.cs156.diningcachingproxy.controller.DiningProxyControllerTests.[engine:junit-jupiter]/[class:edu.ucsb.cs156.diningcachingproxy.controller.DiningProxyControllerTests]/[method:launches_a_resolution_job_when_the_address_is_new()]</span></span> negated conditional &rarr; KILLED</span>
+</div> 
+</td>
+</tr>
+<tr>
+<td><a href='#org.pitest.mutationtest.report.html.SourceFile@6104691c_49'>49</a></td> 
+<td></td>
+<td>
+
+<a name='grouporg.pitest.mutationtest.report.html.SourceFile@6104691c_49'/> 
+
+<p class='KILLED'><span class='pop'>1.<span><b>1</b><br/><b>Location : </b>proxy<br/><b>Killed by : </b>edu.ucsb.cs156.diningcachingproxy.controller.DiningProxyControllerTests.[engine:junit-jupiter]/[class:edu.ucsb.cs156.diningcachingproxy.controller.DiningProxyControllerTests]/[method:proxies_a_hypothetical_future_endpoint_never_seen_before()]</span></span> negated conditional &rarr; KILLED</span>
+</div> 
+</td>
+</tr>
+<tr>
+<td><a href='#org.pitest.mutationtest.report.html.SourceFile@6104691c_52'>52</a></td> 
+<td></td>
+<td>
+
+<a name='grouporg.pitest.mutationtest.report.html.SourceFile@6104691c_52'/> 
+
+<p class='KILLED'><span class='pop'>1.<span><b>1</b><br/><b>Location : </b>proxy<br/><b>Killed by : </b>edu.ucsb.cs156.diningcachingproxy.controller.DiningProxyControllerTests.[engine:junit-jupiter]/[class:edu.ucsb.cs156.diningcachingproxy.controller.DiningProxyControllerTests]/[method:proxies_the_dining_commons_list_endpoint()]</span></span> replaced return value with null for edu/ucsb/cs156/diningcachingproxy/controller/DiningProxyController::proxy &rarr; KILLED</span>
+</div> 
+</td>
+</tr>
+<tr>
+<td><a href='#org.pitest.mutationtest.report.html.SourceFile@6104691c_59'>59</a></td> 
+<td></td>
+<td>
+
+<a name='grouporg.pitest.mutationtest.report.html.SourceFile@6104691c_59'/> 
+
+<p class='KILLED'><span class='pop'>1.<span><b>1</b><br/><b>Location : </b>extractClientAddress<br/><b>Killed by : </b>edu.ucsb.cs156.diningcachingproxy.controller.DiningProxyControllerTests.[engine:junit-jupiter]/[class:edu.ucsb.cs156.diningcachingproxy.controller.DiningProxyControllerTests]/[method:falls_back_to_the_address_when_the_requesting_app_header_is_blank()]</span></span> negated conditional &rarr; KILLED</span>
+</div> <p class='KILLED'><span class='pop'>2.<span><b>2</b><br/><b>Location : </b>extractClientAddress<br/><b>Killed by : </b>edu.ucsb.cs156.diningcachingproxy.controller.DiningProxyControllerTests.[engine:junit-jupiter]/[class:edu.ucsb.cs156.diningcachingproxy.controller.DiningProxyControllerTests]/[method:falls_back_to_the_remote_address_when_there_is_no_x_forwarded_for_header()]</span></span> negated conditional &rarr; KILLED</span>
+</div> 
+</td>
+</tr>
+<tr>
+<td><a href='#org.pitest.mutationtest.report.html.SourceFile@6104691c_60'>60</a></td> 
+<td></td>
+<td>
+
+<a name='grouporg.pitest.mutationtest.report.html.SourceFile@6104691c_60'/> 
+
+<p class='KILLED'><span class='pop'>1.<span><b>1</b><br/><b>Location : </b>extractClientAddress<br/><b>Killed by : </b>edu.ucsb.cs156.diningcachingproxy.controller.DiningProxyControllerTests.[engine:junit-jupiter]/[class:edu.ucsb.cs156.diningcachingproxy.controller.DiningProxyControllerTests]/[method:falls_back_to_the_address_when_the_requesting_app_header_is_blank()]</span></span> replaced return value with &#34;&#34; for edu/ucsb/cs156/diningcachingproxy/controller/DiningProxyController::extractClientAddress &rarr; KILLED</span>
+</div> 
+</td>
+</tr>
+<tr>
+<td><a href='#org.pitest.mutationtest.report.html.SourceFile@6104691c_62'>62</a></td> 
+<td></td>
+<td>
+
+<a name='grouporg.pitest.mutationtest.report.html.SourceFile@6104691c_62'/> 
+
+<p class='KILLED'><span class='pop'>1.<span><b>1</b><br/><b>Location : </b>extractClientAddress<br/><b>Killed by : </b>edu.ucsb.cs156.diningcachingproxy.controller.DiningProxyControllerTests.[engine:junit-jupiter]/[class:edu.ucsb.cs156.diningcachingproxy.controller.DiningProxyControllerTests]/[method:falls_back_to_the_remote_address_when_there_is_no_x_forwarded_for_header()]</span></span> replaced return value with &#34;&#34; for edu/ucsb/cs156/diningcachingproxy/controller/DiningProxyController::extractClientAddress &rarr; KILLED</span>
+</div> 
+</td>
+</tr>
+
+</table>
+
+
+<h2>Active mutators</h2>
+<ul>
+<li class='mutator'>CONDITIONALS_BOUNDARY</li>
+<li class='mutator'>EMPTY_RETURNS</li>
+<li class='mutator'>FALSE_RETURNS</li>
+<li class='mutator'>INCREMENTS</li>
+<li class='mutator'>INVERT_NEGS</li>
+<li class='mutator'>MATH</li>
+<li class='mutator'>NEGATE_CONDITIONALS</li>
+<li class='mutator'>NULL_RETURNS</li>
+<li class='mutator'>PRIMITIVE_RETURNS</li>
+<li class='mutator'>TRUE_RETURNS</li>
+<li class='mutator'>VOID_METHOD_CALLS</li>
+
+</ul>
+
+<h2>Tests examined</h2>
+<ul>
+<li>edu.ucsb.cs156.diningcachingproxy.controller.DiningProxyControllerTests.[engine:junit-jupiter]/[class:edu.ucsb.cs156.diningcachingproxy.controller.DiningProxyControllerTests]/[method:falls_back_to_the_remote_address_when_there_is_no_x_forwarded_for_header()] (3 ms)</li><li>edu.ucsb.cs156.diningcachingproxy.controller.DiningProxyControllerTests.[engine:junit-jupiter]/[class:edu.ucsb.cs156.diningcachingproxy.controller.DiningProxyControllerTests]/[method:proxies_a_hypothetical_future_endpoint_never_seen_before()] (3 ms)</li><li>edu.ucsb.cs156.diningcachingproxy.controller.DiningProxyControllerTests.[engine:junit-jupiter]/[class:edu.ucsb.cs156.diningcachingproxy.controller.DiningProxyControllerTests]/[method:proxies_the_dining_commons_list_endpoint()] (3 ms)</li><li>edu.ucsb.cs156.diningcachingproxy.controller.DiningProxyControllerTests.[engine:junit-jupiter]/[class:edu.ucsb.cs156.diningcachingproxy.controller.DiningProxyControllerTests]/[method:falls_back_to_the_address_when_the_requesting_app_header_is_blank()] (3 ms)</li><li>edu.ucsb.cs156.diningcachingproxy.controller.DiningProxyControllerTests.[engine:junit-jupiter]/[class:edu.ucsb.cs156.diningcachingproxy.controller.DiningProxyControllerTests]/[method:proxies_a_three_segment_menu_items_path_with_no_code_change_needed()] (3 ms)</li><li>edu.ucsb.cs156.diningcachingproxy.controller.DiningProxyControllerTests.[engine:junit-jupiter]/[class:edu.ucsb.cs156.diningcachingproxy.controller.DiningProxyControllerTests]/[method:appends_the_query_string_to_the_request_path_when_present()] (3 ms)</li><li>edu.ucsb.cs156.diningcachingproxy.controller.DiningProxyControllerTests.[engine:junit-jupiter]/[class:edu.ucsb.cs156.diningcachingproxy.controller.DiningProxyControllerTests]/[method:records_the_first_hop_of_a_multi_hop_x_forwarded_for_header()] (3 ms)</li><li>edu.ucsb.cs156.diningcachingproxy.controller.DiningProxyControllerTests.[engine:junit-jupiter]/[class:edu.ucsb.cs156.diningcachingproxy.controller.DiningProxyControllerTests]/[method:launches_a_resolution_job_when_the_address_is_new()] (3 ms)</li><li>edu.ucsb.cs156.diningcachingproxy.controller.DiningProxyControllerTests.[engine:junit-jupiter]/[class:edu.ucsb.cs156.diningcachingproxy.controller.DiningProxyControllerTests]/[method:falls_back_to_the_remote_address_when_x_forwarded_for_is_blank()] (4 ms)</li><li>edu.ucsb.cs156.diningcachingproxy.controller.DiningProxyControllerTests.[engine:junit-jupiter]/[class:edu.ucsb.cs156.diningcachingproxy.controller.DiningProxyControllerTests]/[method:tracks_by_the_self_reported_app_name_when_present()] (3 ms)</li><li>edu.ucsb.cs156.diningcachingproxy.controller.DiningProxyControllerTests.[engine:junit-jupiter]/[class:edu.ucsb.cs156.diningcachingproxy.controller.DiningProxyControllerTests]/[method:does_not_launch_a_resolution_job_for_a_self_reported_app_name()] (3 ms)</li><li>edu.ucsb.cs156.diningcachingproxy.controller.DiningProxyControllerTests.[engine:junit-jupiter]/[class:edu.ucsb.cs156.diningcachingproxy.controller.DiningProxyControllerTests]/[method:does_not_launch_a_resolution_job_when_the_address_has_been_seen_before()] (5 ms)</li><li>edu.ucsb.cs156.diningcachingproxy.controller.DiningProxyControllerTests.[engine:junit-jupiter]/[class:edu.ucsb.cs156.diningcachingproxy.controller.DiningProxyControllerTests]/[method:proxies_a_two_segment_menu_path_with_no_code_change_needed()] (7 ms)</li><li>edu.ucsb.cs156.diningcachingproxy.DiningProxyIntegrationTests.[engine:junit-jupiter]/[class:edu.ucsb.cs156.diningcachingproxy.DiningProxyIntegrationTests]/[method:a_cache_miss_is_stored_and_a_repeat_request_is_served_from_the_cache()] (167 ms)</li>
+</ul>
+
+<br/>
+
+Report generated by <a href='https://pitest.org'>PIT</a> 1.22.1
+
+</body>
+</html>
