@@ -20,4 +20,4 @@ repo_name: "TBD"
 repo: ucsb-cs156-f26/proj-dining-caching-proxy-f26-08
 owner: ucsb-cs156-f26
 repo_name: proj-dining-caching-proxy-f26-08
-pull_requests: []
+pull_requests: [{"author":{"id":"U_kgDODf-SIw","is_bot":false,"login":"celinezhao7","name":"Celine Zhao"},"headRefName":"celine-caching-proxy","number":23,"title":"Add cached responses admin table and purge action","url":"https://github.com/ucsb-cs156-f26/proj-dining-caching-proxy-f26-08/pull/23"}]
