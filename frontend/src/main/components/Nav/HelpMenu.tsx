@@ -11,7 +11,7 @@ export default function HelpMenu(): React.JSX.Element {
         className="narrow-dropdown" // Add the custom class
         align="end" // Align the menu to the right
       >
-        <NavDropdown.Item as={Link} to="/help/about">
+        <NavDropdown.Item as={Link} to="/about">
           About
         </NavDropdown.Item>
       </NavDropdown>
