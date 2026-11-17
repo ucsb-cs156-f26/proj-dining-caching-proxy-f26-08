@@ -1,7 +1,9 @@
 package edu.ucsb.cs156.diningcachingproxy.services;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.assertArg;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.times;
@@ -97,13 +99,14 @@ public class DiningProxyServiceTests {
     verify(statsService, times(0)).recordHit();
     verify(cachedResponseRepository, times(1))
         .save(
-            eq(
-                CachedResponse.builder()
-                    .requestPath("/dining/commons/v1/")
-                    .responseStatus(200)
-                    .responseBody("[\"fresh\"]")
-                    .hitCount(1)
-                    .build()));
+            assertArg(
+                cachedResponse -> {
+                  assertEquals("/dining/commons/v1/", cachedResponse.getRequestPath());
+                  assertEquals(200, cachedResponse.getResponseStatus());
+                  assertEquals("[\"fresh\"]", cachedResponse.getResponseBody());
+                  assertEquals(1, cachedResponse.getHitCount());
+                  assertNotNull(cachedResponse.getCachedAt());
+                }));
     mockServer.verify();
   }
 
