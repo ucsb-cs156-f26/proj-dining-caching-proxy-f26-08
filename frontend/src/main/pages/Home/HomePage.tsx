@@ -25,7 +25,17 @@ export type HostCount = {
   count: number;
 };
 
+export type CachedEndpoint = {
+  id: string;
+  requestPath: string;
+  hitCount: number;
+  responseStatus: number;
+  responseBody: string;
+  cachedAt: string | null;
+};
+
 const hostsEndpoint = "/api/admin/hosts";
+const cachedEndpointsEndpoint = "/api/admin/endpoints";
 
 // A host that hasn't (yet, or successfully) resolved to a hostname still displays as its own
 // raw IPv4 address - that's exactly the signal to show a retry button for it.
@@ -51,6 +61,14 @@ export default function HomePage(): React.JSX.Element {
     // Stryker disable next-line StringLiteral: axios treats a falsy method as "GET"
     { method: "GET", url: hostsEndpoint },
     // Stryker disable next-line all : don't test default value of empty list
+    [],
+    false,
+    { enabled: isAdmin },
+  );
+
+  const { data: cachedEndpoints } = useBackend<CachedEndpoint[]>(
+    [cachedEndpointsEndpoint],
+    { method: "GET", url: cachedEndpointsEndpoint },
     [],
     false,
     { enabled: isAdmin },
@@ -94,6 +112,69 @@ export default function HomePage(): React.JSX.Element {
       },
     },
   ];
+  const purgeMutation = useBackendMutation<string>(
+    (id: string) => ({
+      url: `${cachedEndpointsEndpoint}/${id}`,
+      method: "DELETE",
+    }),
+    {
+      onSuccess: () => {
+        toast.success("Cached response purged");
+      },
+      onError: () => {
+        toast.error("Failed to purge cached response");
+      },
+    },
+    [cachedEndpointsEndpoint],
+  );
+
+  const cachedEndpointColumns = [
+    { header: "Request Path", accessorKey: "requestPath" },
+    { header: "Hit Count", accessorKey: "hitCount" },
+    { header: "Response Status", accessorKey: "responseStatus" },
+    {
+      header: "Cached At",
+      accessorKey: "cachedAt",
+      cell: ({ cell }: { cell: Cell<CachedEndpoint, unknown> }) => {
+        const { cachedAt } = cell.row.original;
+        return cachedAt ? new Date(cachedAt).toLocaleString() : "Unknown";
+      },
+    },
+    {
+      header: "Response Body",
+      id: "responseBody",
+      cell: ({ cell }: { cell: Cell<CachedEndpoint, unknown> }) => (
+        <details>
+          <summary>View Response</summary>
+          <pre
+            style={{
+              maxWidth: "400px",
+              maxHeight: "200px",
+              overflow: "auto",
+              whiteSpace: "pre-wrap",
+              overflowWrap: "anywhere",
+            }}
+          >
+            {cell.row.original.responseBody}
+          </pre>
+        </details>
+      ),
+    },
+    {
+      header: "",
+      id: "purge",
+      cell: ({ cell }: { cell: Cell<CachedEndpoint, unknown> }) => (
+        <Button
+          size="sm"
+          variant="danger"
+          onClick={() => purgeMutation.mutate(cell.row.original.id)}
+          data-testid={`HomePage-cached-table-cell-row-${cell.row.index}-col-purge-button`}
+        >
+          Purge
+        </Button>
+      ),
+    },
+  ];
 
   return (
     <BasicLayout>
@@ -134,6 +215,12 @@ export default function HomePage(): React.JSX.Element {
               data={hostCounts ?? []}
               columns={hostColumns}
               testid="HomePage-hosts-table"
+            />
+            <h2>Cached Responses</h2>
+            <OurTable
+              data={cachedEndpoints ?? []}
+              columns={cachedEndpointColumns}
+              testid="HomePage-cached-table"
             />
           </>
         )}
