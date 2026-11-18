@@ -15,8 +15,8 @@ RUN rm -rf /var/lib/apt/lists/*
 ENV JAVA_HOME=/usr/lib/jvm/java-25-openjdk-amd64
 ENV PATH="$JAVA_HOME/bin:$PATH"
 
-# Install maven version 3.9.12
-ARG MAVEN_VERSION=3.9.12
+# Install maven version 3.9.16
+ARG MAVEN_VERSION=3.9.16
 RUN curl -fsSL -o /tmp/maven.tgz https://archive.apache.org/dist/maven/maven-3/${MAVEN_VERSION}/binaries/apache-maven-${MAVEN_VERSION}-bin.tar.gz \
     && mkdir -p /opt/maven \
     && tar -xzf /tmp/maven.tgz -C /opt/maven --strip-components=1 \
