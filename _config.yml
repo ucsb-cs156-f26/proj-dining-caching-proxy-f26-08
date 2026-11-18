@@ -20,4 +20,4 @@ repo_name: "TBD"
 repo: ucsb-cs156-f26/proj-dining-caching-proxy-f26-08
 owner: ucsb-cs156-f26
 repo_name: proj-dining-caching-proxy-f26-08
-pull_requests: []
+pull_requests: [{"author":{"id":"U_kgDOCVG5_A","is_bot":false,"login":"hzw10","name":""},"headRefName":"hzw-deprecationwarning","number":25,"title":"dockerfile install maven 3.9.12 pinned upstream","url":"https://github.com/ucsb-cs156-f26/proj-dining-caching-proxy-f26-08/pull/25"}]
