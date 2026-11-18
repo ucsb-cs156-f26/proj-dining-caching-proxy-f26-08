@@ -7,7 +7,6 @@ RUN apt-get update
 RUN apt-get install -y openjdk-25-jdk  
 RUN apt-get install -y  curl  
 RUN apt-get install -y  bash  
-RUN apt-get install -y maven  
 RUN apt-get install -y  python3 
 RUN apt-get clean
 RUN rm -rf /var/lib/apt/lists/*
@@ -16,14 +15,22 @@ RUN rm -rf /var/lib/apt/lists/*
 ENV JAVA_HOME=/usr/lib/jvm/java-25-openjdk-amd64
 ENV PATH="$JAVA_HOME/bin:$PATH"
 
-# Verify installation
-RUN java -version
+# Install maven version 3.9.12
+ARG MAVEN_VERSION=3.9.12
+RUN curl -fsSL -o /tmp/maven.tgz https://archive.apache.org/dist/maven/maven-3/${MAVEN_VERSION}/binaries/apache-maven-${MAVEN_VERSION}-bin.tar.gz \
+    && mkdir -p /opt/maven \
+    && tar -xzf /tmp/maven.tgz -C /opt/maven --strip-components=1 \
+    && rm /tmp/maven.tgz
+# Add path to maven
+ENV MAVEN_HOME=/opt/maven
+ENV PATH="$MAVEN_HOME/bin:$PATH"
 
-WORKDIR /app
-
 # Verify installation
+RUN mvn --version
 RUN java -version
 RUN curl --version
+
+WORKDIR /app
 
 ENV NODE_VERSION=24.21.0
 RUN curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.40.1/install.sh | bash
