@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>ResolveHostnameJob.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">diningcachingproxy</a> &gt; <a href="index.source.html" class="el_package">edu.ucsb.cs156.diningcachingproxy.jobs</a> &gt; <span class="el_source">ResolveHostnameJob.java</span></div><h1>ResolveHostnameJob.java</h1><pre class="source lang-java linenums">package edu.ucsb.cs156.diningcachingproxy.jobs;
+
+import edu.ucsb.cs156.diningcachingproxy.services.HostTrackingService;
+import edu.ucsb.cs156.jobs.services.JobContext;
+import edu.ucsb.cs156.jobs.services.JobContextConsumer;
+import java.net.InetAddress;
+import java.net.UnknownHostException;
+import lombok.Builder;
+
+/**
+ * Attempts a reverse DNS lookup for one IP address, updating {@link HostTrackingService} with the
+ * result (the resolved hostname, or the address itself if resolution fails). Runs asynchronously
+ * via {@code JobService} - reverse DNS is a blocking network call with no built-in timeout, so it
+ * must never run inline in the proxy's request path.
+ */
+@Builder
+public class ResolveHostnameJob implements JobContextConsumer {
+
+  private String ipAddress;
+  private HostTrackingService hostTrackingService;
+
+  @Override
+  public void accept(JobContext ctx) throws Exception {
+<span class="fc" id="L24">    ctx.log(&quot;Resolving hostname for &quot; + ipAddress);</span>
+<span class="fc" id="L25">    String hostname = resolveHostname(ipAddress);</span>
+<span class="fc" id="L26">    hostTrackingService.resolveHostname(ipAddress, hostname);</span>
+<span class="fc" id="L27">    ctx.log(&quot;Resolved &quot; + ipAddress + &quot; to &quot; + hostname);</span>
+<span class="fc" id="L28">  }</span>
+
+  private String resolveHostname(String remoteAddress) {
+    try {
+<span class="fc" id="L32">      String hostname = InetAddress.getByName(remoteAddress).getCanonicalHostName();</span>
+      // getCanonicalHostName() doesn't throw when reverse DNS fails - it falls back to
+      // returning the address's own textual form, which we detect here.
+<span class="fc bfc" id="L35" title="All 2 branches covered.">      return hostname.equals(remoteAddress) ? remoteAddress : hostname;</span>
+<span class="fc" id="L36">    } catch (UnknownHostException e) {</span>
+<span class="fc" id="L37">      return remoteAddress;</span>
+    }
+  }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.15.202606040825</span></div></body></html>

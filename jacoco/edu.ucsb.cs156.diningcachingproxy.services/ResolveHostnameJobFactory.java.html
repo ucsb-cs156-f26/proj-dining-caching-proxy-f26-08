@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>ResolveHostnameJobFactory.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">diningcachingproxy</a> &gt; <a href="index.source.html" class="el_package">edu.ucsb.cs156.diningcachingproxy.services</a> &gt; <span class="el_source">ResolveHostnameJobFactory.java</span></div><h1>ResolveHostnameJobFactory.java</h1><pre class="source lang-java linenums">package edu.ucsb.cs156.diningcachingproxy.services;
+
+import edu.ucsb.cs156.diningcachingproxy.jobs.ResolveHostnameJob;
+import edu.ucsb.cs156.jobs.entities.Job;
+import edu.ucsb.cs156.jobs.services.JobService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+/**
+ * Builds and launches a {@link ResolveHostnameJob} for one IP address. Used both to auto-trigger
+ * resolution the first time an address is seen, and to manually retry it on demand - a single call
+ * site for both so there's exactly one place that knows how to build this job.
+ */
+@Service
+<span class="fc" id="L15">public class ResolveHostnameJobFactory {</span>
+
+  @Autowired private HostTrackingService hostTrackingService;
+  @Autowired private JobService jobService;
+
+  public Job launch(String ipAddress) {
+    ResolveHostnameJob job =
+<span class="fc" id="L22">        ResolveHostnameJob.builder()</span>
+<span class="fc" id="L23">            .ipAddress(ipAddress)</span>
+<span class="fc" id="L24">            .hostTrackingService(hostTrackingService)</span>
+<span class="fc" id="L25">            .build();</span>
+<span class="fc" id="L26">    return jobService.runAsJob(job);</span>
+  }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.15.202606040825</span></div></body></html>
